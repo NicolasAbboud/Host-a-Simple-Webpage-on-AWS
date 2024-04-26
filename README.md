@@ -25,7 +25,7 @@ To get your static website up and running quickly, follow these steps:
    ````bash
    git clone https://github.com/yourusername/host-a-simple-webpage-on-AWS.git
    ````
-3. **Navigate to the cloned directory** and open the Terraform configuration files to review the settings. Don't forget to update the S3 bucket name (it must be globally unique)!
+3. **Navigate to the cloned directory** and open the Terraform configuration files to review and configure the settings. Don't forget to update the S3 bucket name (it must be globally unique)!
 4. **Upload your website content** to the web-files folder.
 5. **Initialize Terraform** to download the necessary providers:
    ````bash
