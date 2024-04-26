@@ -1,6 +1,5 @@
 # Host a Simple Webpage on AWS
 
-This repository contains the files for hosting a simple static webpage using Amazon Web Services (AWS).
 
 ## Description
 The project demonstrates a straightforward approach to deploying a simple static website on AWS, utilizing the services S3 for hosting and CloudFront for content delivery, with Terraform employed as the Infrastructure as Code (IaC) tool to automate the setup.
