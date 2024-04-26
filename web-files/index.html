@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Berlin Date and Time</title>
+<style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+    header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #capitals-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 20vh;
+      font-size: 20px;
+    }
+    .capital-time {
+      margin: 10px 0;
+    }
+    .bold {
+      font-weight: bold;
+    }    
+</style>
+</head>
+<body>
+  <header>
+    <h1>Current Date and Time in Berlin</h1>
+</header>
+      
+
+<!-- Container for the capitals' times and dates -->
+<div id="capitals-container"></div>
+
+<script>
+// List of EU capitals and their respective time zones
+const euCapitals = [
+  { country: 'Germany', city: 'Berlin', timeZone: 'Europe/Berlin' },
+];
+
+// Function to fetch time and date for a single capital
+function fetchTimeDate(capital) {
+  return fetch(`http://worldtimeapi.org/api/timezone/${capital.timeZone}`)
+    .then(response => response.json())
+    .then(data => {
+      const dateTimeString = data.datetime;
+      const date = new Date(dateTimeString);
+      const options = { timeZone: capital.timeZone, hour: '2-digit', minute: '2-digit', hour12: true, weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      const formattedTimeDate = date.toLocaleString('en-GB', options);
+      return `<span class="bold">${capital.country}, ${capital.city}:</span> ${formattedTimeDate}`;
+    })
+    .catch(error => {
+      console.error(`Error fetching time for ${capital.city}:`, error);
+      return `<span class="bold">${capital.country}, ${capital.city}:</span> Error fetching time`;
+    });
+}
+
+// Function to update the time and date for all capitals
+function updateAllClocks() {
+  const fetchPromises = euCapitals.map(capital => fetchTimeDate(capital));
+
+  Promise.all(fetchPromises).then(results => {
+    const capitalsContainer = document.getElementById('capitals-container');
+    capitalsContainer.innerHTML = ''; // Clear the container before appending new elements
+    results.forEach((result, index) => {
+      const timeElement = document.createElement('div');
+      timeElement.className = 'capital-time';
+      timeElement.id = `${euCapitals[index].country}-time`;
+      timeElement.innerHTML = result;
+      capitalsContainer.appendChild(timeElement);
+    });
+  });
+}
+
+// Call the updateAllClocks function every minute to keep the times and dates updated
+setInterval(updateAllClocks, 60000);
+
+// Update the times and dates immediately on page load
+updateAllClocks();
+</script>
+</body>
+</html>
